@@ -1,0 +1,60 @@
+<html>
+    <head>
+        <title>GitHub Notifications</title>
+        <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.indigo-pink.min.css">
+        <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+        <style>
+            .github-notifier.mdl-card {
+                width: 335px;
+                background: #f2ff;
+            }
+
+            .github-notifier > .mdl-card__title {
+                color: #000;
+                height: 170px;
+                background: url('https://enterprise.github.com/assets/aws/jetpack-octocat-clouds-11760c12e5f33fb4ecec2ce20b894461.jpg') center / cover;
+            }
+
+            .github-notifier > .mdl-card__menu {
+                color: #fff;
+            }
+
+            .add-project__forms{}
+        </style>
+    </head>
+    <body>
+        <div class="github-notifier mdl-card mdl-shadow--2d">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">GitHub Notifications</h2>
+            </div>
+
+            <div class="mdl-card__supporting-text">
+                <p class="add-project__new-user">Hello, add some projects to get started!</p>
+                <p class="add-project__been-here-before">Welcome back! Add a couple more projects?...</p>
+                <p>Enter the organisation/user and repository, <strong>NOT</strong> the full GitHub URL.</p>
+
+                <div class="add-project__forms">
+
+                </div>
+
+                <br/>
+
+                <button class="add-project__watch-new-bttn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                Watch new project
+                </button>
+
+                <button class="add-project__save-bttn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                Save
+                </button>
+
+                <br/><br/>
+
+                <p><a href="https://github.com/ModestGoblin/github-notifications" target="_blank">Fork me on GitHub</a></p>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="options.js"></script>
+    </body>
+</html>
