@@ -6,7 +6,7 @@ Get notified of changes to repositories you want to keep track of!
 
 **Firefox Add-on:** *WIP*
 
-**Google Chrome Extension:** [Download version 1.0](https://chrome.google.com/webstore/detail/github-notifications/lahlghihdacfigfokfmhbebnphanbfdg)
+**Google Chrome Extension:** [Download version 1.1](https://chrome.google.com/webstore/detail/github-notifications/lahlghihdacfigfokfmhbebnphanbfdg)
 
 **Microsoft Edge:** *WIP*
 
