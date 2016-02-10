@@ -72,6 +72,9 @@ function getData(initialRun){
                     return XHRGetRequest(githubProjectUrl + '/issues');
                 }).then((data) => {
                     parseData(data, organisation, repository, initialRun, 'issue');
+                    return XHRGetRequest(githubProjectUrl + '/commits');
+                }).then((data) => {
+                    parseData(data, organisation, repository, initialRun, 'commit');
                     return XHRGetRequest(githubProjectUrl + '/releases');
                 }).then((data) => {
                     parseData(data, organisation, repository, initialRun, 'release');
@@ -111,6 +114,10 @@ function parseData(resp, org, repo, initialRun, type){
         case 'issue':
             selectors = '.table-list-issues .js-issue-row .issue-title-link',
             type = 'issue'
+            break;
+        case 'commit':
+            selectors = '.table-list-issues .js-issue-row .issue-title-link',
+            type = 'commit'
             break;
         case 'release':
             selectors = '.release-timeline .release-header .release-title a',
