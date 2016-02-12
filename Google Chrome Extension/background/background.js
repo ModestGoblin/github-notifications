@@ -72,7 +72,7 @@ function getData(initialRun){
                     return XHRGetRequest(githubProjectUrl + '/issues');
                 }).then((data) => {
                     parseData(data, organisation, repository, initialRun, 'issue');
-                    return XHRGetRequest(githubProjectUrl + '/commits');
+                    return XHRGetRequest(githubProjectUrl + '/commits/master');
                 }).then((data) => {
                     parseData(data, organisation, repository, initialRun, 'commit');
                     return XHRGetRequest(githubProjectUrl + '/releases');
