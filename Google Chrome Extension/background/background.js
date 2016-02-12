@@ -157,8 +157,8 @@ function parseData(resp, org, repo, initialRun, type){
     });
 }
 
-// Initial run to prevent notification flooding
+// Initial run to prevent notification flooding, still not ideal for "popular" repositories
 getData(true);
 
-// Poll for new notifications every 30 seconds
-setInterval(() => getData(false), 30000);
+// Poll for new notifications every 1 minute and 30 seconds
+setInterval(() => getData(false), 90000);
