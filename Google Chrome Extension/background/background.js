@@ -1,23 +1,17 @@
 "use strict";
 
 let warmRepositories = [],
-    currentNotifications = [];
+    currentNotifications = [],
+    intervalID,
+    currentRefresh;
     
 chrome.notifications.onButtonClicked.addListener(
     function(notifId, btnIdx) {
-        if (notifId === 'notloggedin') {
-            chrome.tabs.create(
-                {
-                    url: 'https://github.com/login'
-                }
-            );
-        } else {
-            chrome.tabs.create(
-                {
-                    url: 'http://github.com' + notifId.split(':')[3]
-                }
-            );
-        }
+        chrome.tabs.create(
+            {
+                url: 'https://github.com' + notifId.split(':')[3]
+            }
+        );
     }
 );
 
@@ -56,46 +50,34 @@ function displayNotification(id, title, message, buttons){
 function getData(initialRun){
     chrome.storage.sync.get("data", (obj) => {
         obj.data.forEach((project) => {
-            let organisation = project.org,
-                repository = project.repo,
-                githubProjectUrl = 'http://github.com/' + organisation + '/' + repository,
-                isCold = warmRepositories.indexOf(organisation + ":" + repository) === -1;
+            setTimeout(function () {
+                let organisation = project.org,
+                    repository = project.repo,
+                    githubProjectUrl = 'http://github.com/' + organisation + '/' + repository,
+                    isCold = warmRepositories.indexOf(organisation + ":" + repository) === -1;
 
-            if(isCold){
-                initialRun = true;
-                warmRepositories.push(organisation + ":" + repository);
-            }
+                if(isCold){
+                    initialRun = true;
+                    warmRepositories.push(organisation + ":" + repository);
+                }
 
-            if(organisation !== undefined && repository !== undefined){
-                XHRGetRequest(githubProjectUrl + '/pulls').then((data) => {
-                    parseData(data, organisation, repository, initialRun, 'pull');
-                    return XHRGetRequest(githubProjectUrl + '/issues');
-                }).then((data) => {
-                    parseData(data, organisation, repository, initialRun, 'issue');
-                    return XHRGetRequest(githubProjectUrl + '/commits/master');
-                }).then((data) => {
-                    parseData(data, organisation, repository, initialRun, 'commit');
-                    return XHRGetRequest(githubProjectUrl + '/releases');
-                }).then((data) => {
-                    parseData(data, organisation, repository, initialRun, 'release');
-                }).catch((e) => {
-                    if (e.status == 404) {
-                        displayNotification(
-                            '404',
-                            'GitHub Notification - Error',
-                            "Error: " + e.status + " " + e.statusText + "\nFor: " + e.responseURL + "\n\nPlease verify the organisation/user and repo are correct."
-                        );
-                    } else {
-                        displayNotification(
-                            'notloggedin',
-                            'GitHub Notification - Error',
-                            "You don't appear signed into GitHub!! \n\n",
-                            [{ title: "Sign in" }]
-                        );
-                    }
-                   
-                });
-            };
+                if(organisation !== undefined && repository !== undefined){
+                    XHRGetRequest(githubProjectUrl + '/pulls').then((data) => {
+                        parseData(data, organisation, repository, initialRun, 'pull');
+                        return XHRGetRequest(githubProjectUrl + '/issues');
+                    }).then((data) => {
+                        parseData(data, organisation, repository, initialRun, 'issue');
+                        return XHRGetRequest(githubProjectUrl + '/commits/master');
+                    }).then((data) => {
+                        parseData(data, organisation, repository, initialRun, 'commit');
+                        return XHRGetRequest(githubProjectUrl + '/releases');
+                    }).then((data) => {
+                        parseData(data, organisation, repository, initialRun, 'release');
+                    }).catch((e) => {
+                        console.error('There was an issue fetching ' + e.reponseURL + ' from GitHub. Error: ', e);
+                    });
+                };
+            }, 60000)
         });
     });
 }
