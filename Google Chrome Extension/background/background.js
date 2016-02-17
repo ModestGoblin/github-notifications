@@ -67,7 +67,7 @@ function getData(initialRun){
                         return XHRGetRequest(githubProjectUrl + '/issues');
                     }).then((data) => {
                         parseData(data, organisation, repository, initialRun, 'issue');
-                        return XHRGetRequest(githubProjectUrl + '/commits/master');
+                        return XHRGetRequest(githubProjectUrl + '/commits');
                     }).then((data) => {
                         parseData(data, organisation, repository, initialRun, 'commit');
                         return XHRGetRequest(githubProjectUrl + '/releases');
@@ -137,10 +137,31 @@ function parseData(resp, org, repo, initialRun, type){
             currentNotifications.push(notification.text.trim());
         };
     });
+
+    chrome.storage.sync.get("refresh", (obj) => {
+        if(currentRefresh !== obj.refresh){
+            clearInterval(intervalID);
+            
+            if(obj.refresh <= 180000){
+                obj.refresh = 180000;
+            };
+
+            currentRefresh = obj.refresh;
+
+            intervalID = setInterval(() => getData(false), currentRefresh);
+        }
+    });
 }
 
 // Initial run to prevent notification flooding, still not ideal for "popular" repositories
 getData(true);
 
-// Poll for new notifications every 1 minute and 30 seconds
-setInterval(() => getData(false), 90000);
+// Poll for new notifications every 3 minutes * subject to change to x seconds
+chrome.storage.sync.get("refresh", (obj) => {
+    if(obj.refresh === undefined || obj.refresh <= 180000){
+        obj.refresh = 180000;
+    }
+    
+    currentRefresh = obj.refresh;
+    intervalID = setInterval(() => getData(false), currentRefresh);
+});
