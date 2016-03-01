@@ -9,7 +9,7 @@ chrome.notifications.onButtonClicked.addListener(
     function(notifId, btnIdx) {
         chrome.tabs.create(
             {
-                url: 'https://github.com' + notifId.split(':')[3]
+                url: 'http://github.com' + notifId.split(':')[3]
             }
         );
     }
@@ -20,6 +20,9 @@ function XHRGetRequest(url){
         let request = new XMLHttpRequest();
 
         request.open('GET', url, true);
+
+        // Set GitHub user agent (good web citizen)
+        request.setRequestHeader('X-GH-UserAgent', 'github-notifier-v1.11.2');
 
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {
@@ -67,14 +70,11 @@ function getData(initialRun){
                         return XHRGetRequest(githubProjectUrl + '/issues');
                     }).then((data) => {
                         parseData(data, organisation, repository, initialRun, 'issue');
-                        return XHRGetRequest(githubProjectUrl + '/commits');
-                    }).then((data) => {
-                        parseData(data, organisation, repository, initialRun, 'commit');
                         return XHRGetRequest(githubProjectUrl + '/releases');
                     }).then((data) => {
                         parseData(data, organisation, repository, initialRun, 'release');
                     }).catch((e) => {
-                        console.error('There was an issue fetching ' + e.reponseURL + ' from GitHub. Error: ', e);
+                        console.error('There was an issue fetching ' + e.responseURL + ' from Github. Error: ', e);
                     });
                 };
             }, 60000)
@@ -96,10 +96,6 @@ function parseData(resp, org, repo, initialRun, type){
         case 'issue':
             selectors = '.table-list-issues .js-issue-row .issue-title-link',
             type = 'issue'
-            break;
-        case 'commit':
-            selectors = '.table-list-issues .js-issue-row .issue-title-link',
-            type = 'commit'
             break;
         case 'release':
             selectors = '.release-timeline .release-header .release-title a',
@@ -137,7 +133,7 @@ function parseData(resp, org, repo, initialRun, type){
             currentNotifications.push(notification.text.trim());
         };
     });
-
+    
     chrome.storage.sync.get("refresh", (obj) => {
         if(currentRefresh !== obj.refresh){
             clearInterval(intervalID);
@@ -153,10 +149,10 @@ function parseData(resp, org, repo, initialRun, type){
     });
 }
 
-// Initial run to prevent notification flooding, still not ideal for "popular" repositories
+// Initial run to prevent notification flooding
 getData(true);
 
-// Poll for new notifications every 3 minutes * subject to change to x seconds
+// Poll for new notifications every x seconds
 chrome.storage.sync.get("refresh", (obj) => {
     if(obj.refresh === undefined || obj.refresh <= 180000){
         obj.refresh = 180000;

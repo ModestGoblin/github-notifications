@@ -28,7 +28,7 @@ function populateProjectList(){
         
         attachDeleteEvents();
     });
-
+    
     chrome.storage.sync.get("refresh", function (obj) {
        document.querySelector('.refresh-interval').value = obj.refresh / 1000.0;
     });
@@ -46,7 +46,7 @@ function saveProjects(){
             });
         }
     }
-
+    
     if (document.querySelector('.refresh-interval').value >= 180) {
         document.querySelector('.error-save').style.display = 'none';
         chrome.storage.sync.set(
