@@ -8,3 +8,5 @@ Get notified of changes to repositories you want to keep track of!
 ## Screenshots
 
 ![](/images/screenshot_2.png)
+
+![](/images/screenshot_3.png)
