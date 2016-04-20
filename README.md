@@ -1,5 +1,4 @@
 ### GitHub Notifications  
-![](/images/gnlogo.png)
 
 Get notified of changes to repositories you want to keep track of!
 
