@@ -1,9 +1,9 @@
 ### GitHub Notifications  
-![](/images/gnlogo.png)
+![](/images/icon_3.png)
 
-Get notified of changes to repositories you want to keep track of!
+Stay notified of changes to repositories you want to keep track of!
 
-**Google Chrome Extension:** [Download version 1.2.45](https://chrome.google.com/webstore/detail/github-notifications/lahlghihdacfigfokfmhbebnphanbfdg)
+**Google Chrome Extension:** [Download version 1.2.99](https://chrome.google.com/webstore/detail/github-notifications/lahlghihdacfigfokfmhbebnphanbfdg)
 
 ## Screenshots
 
