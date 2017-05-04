@@ -1,5 +1,8 @@
 ### GitHub Notifications  
+<<<<<<< HEAD
 ![](/images/icon_3.png)
+=======
+>>>>>>> origin/master
 
 Stay notified of changes to repositories you want to keep track of!
 
